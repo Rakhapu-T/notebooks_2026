@@ -1,6 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.signal import argrelmax
+import matplotlib.pyplot as plt
 
 def rclowpass_resp(xv,n0,y0,TdRC,bflag=0):
     """RC lowpass output from given input using standard Euler 
@@ -30,21 +30,15 @@ def rclowpass_resp(xv,n0,y0,TdRC,bflag=0):
     return yv;
 
 # Input signal and discretisation
-N = 20000;
-omega0 = 0.1;  # current frequency
+omega0 = 1;  # current frequency
 T = 0.01;  # small number
-#T = 10/N*RC;
-print('T=',T)
-print('T0=', T0)
-print('T0/180=', T0/180)
-
 if omega0==0:  T0 = np.inf;
-else:  T0 = 2*np.pi/omega0;  # waveform period (seconds) for current omega0
-#nv = np.arange(-200,2000);  # discrete signal indices n
-nv = np.arange(-200,N);  # discrete signal indices n
+else:  T0 = 2*np.pi/omega0;  # waveform period (seconds) for current omega0  
+nv = np.arange(-200,2000);  # discrete signal indices n
 tv = nv*T;  # time values corresponding to indices t=nT
 xv = np.zeros(tv.shape);
-for i in range(0,len(xv)):  xv[i] = np.cos(omega0*tv[i])*(tv[i]>=0); 
+for i in range(0,len(xv)):
+    xv[i] = np.cos(omega0*tv[i])*(tv[i]>=0); 
     
 # Response for given initial condition
 RC = 1;  TdRC = T/RC;
@@ -68,6 +62,7 @@ while theta<=np.pi:  theta = theta + 2*np.pi;  # add or subtract multiples of 2*
 while theta>np.pi:  theta = theta - 2*np.pi;
 
 print('Last output peak:  y(', tv[ylmi], ') =', yv[ylmi]);
-print('Last input peak:  x(', tv[xlmi], ') =', xv[xlmi]);
+print('Preceeding input peak:  x(', tv[xlmi], ') =', xv[xlmi]);
 print('Gain:  A =', gain);
 print('Phase lag:  theta =', theta, 'radians');
+
